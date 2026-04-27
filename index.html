@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Trust Wallet</title>
+    <title>Trust Wallet UI</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     
     <style>
         :root {
-            --bg: #000000;
-            --card: #1c1c1e;
+            --bg: #0b0b0b;
+            --surface: #1c1c1e;
             --accent: #38f37b;
             --muted: #8e8e93;
-            --red: #ff453a;
-            --green: #32d74b;
+            --red-dot: #ff453a;
+            --search-bg: #1c1c1e;
         }
 
         * { 
@@ -28,232 +28,259 @@
             display: flex; justify-content: center; 
         }
         
-        .app { width: 100%; max-width: 430px; min-height: 100vh; position: relative; padding-bottom: 100px; }
+        .app { width: 100%; max-width: 430px; min-height: 100vh; }
 
-        /* Header */
-        .header { 
-            display: flex; align-items: center; padding: 12px 16px; gap: 12px;
-            position: sticky; top: 0; background: var(--bg); z-index: 20;
+        /* --- ВЕРХНЕЕ МЕНЮ (КОПИЯ ПО СКРИНШОТУ) --- */
+        .header-main {
+            padding: 10px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            background: var(--bg);
         }
-        .search-box { 
-            flex: 1; background: #1c1c1e; border-radius: 10px; 
-            display: flex; align-items: center; padding: 8px 12px; gap: 8px;
-        }
-        .search-box input { background: transparent; border: none; color: #fff; width: 100%; outline: none; font-size: 17px; }
-        .search-box i { color: var(--muted); font-size: 20px; }
 
-        /* Wallet */
-        .wallet-info { text-align: center; padding: 15px 0 20px; }
-        .wallet-name { 
-            display: inline-flex; align-items: center; gap: 4px; 
-            background: #1c1c1e; padding: 5px 12px; border-radius: 20px; 
-            font-size: 14px; font-weight: 600; margin-bottom: 10px;
+        .header-top-row {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        .balance-main { font-size: 44px; font-weight: 700; letter-spacing: -1px; }
-        .balance-sub { font-size: 16px; font-weight: 500; color: var(--muted); margin-top: 2px; }
 
-        /* Actions - Точно как в Trust */
-        .action-grid { 
-            display: grid; grid-template-columns: repeat(4, 1fr); 
-            padding: 0 16px 24px; gap: 10px; 
+        /* Иконка шестеренки с красной точкой */
+        .icon-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
         }
-        .act-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .act-btn { 
-            width: 100%; height: 54px; border-radius: 14px; 
-            background: #1c1c1e; display: flex; align-items: center; 
-            justify-content: center; font-size: 26px; 
-        }
-        .act-btn.primary { background: var(--accent); color: #000; }
-        .act-label { font-size: 12px; font-weight: 500; color: #fff; }
 
-        /* Tabs */
-        .tab-bar { 
-            display: flex; padding: 0 16px; gap: 20px; 
-            border-bottom: 0.5px solid #2c2c2e; margin-bottom: 8px;
-        }
-        .t-item { padding: 12px 0; color: var(--muted); font-weight: 600; font-size: 15px; cursor: pointer; }
-        .t-item.active { color: #fff; border-bottom: 2.5px solid var(--accent); }
-        .t-icons { margin-left: auto; display: flex; gap: 18px; align-items: center; color: var(--muted); font-size: 20px; }
-
-        /* List */
-        .coin-item { 
-            display: flex; align-items: center; justify-content: space-between; 
-            padding: 12px 16px; border-bottom: 0.5px solid #1a1a1a;
-        }
-        .c-info { display: flex; align-items: center; gap: 12px; }
-        .c-img { width: 40px; height: 40px; border-radius: 50%; }
-        .c-title { font-weight: 600; font-size: 17px; }
-        .c-cap { font-size: 13px; color: var(--muted); margin-top: 1px; }
-        .c-price { font-weight: 600; font-size: 17px; text-align: right; }
-        .c-perc { font-size: 13px; font-weight: 500; text-align: right; margin-top: 1px; }
-
-        .up { color: var(--green); }
-        .down { color: var(--red); }
-
-        /* Nav */
-        .nav { 
-            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); 
-            width: 90%; max-width: 390px; height: 68px;
-            background: rgba(28, 28, 30, 0.9); backdrop-filter: blur(15px);
-            border-radius: 35px; display: flex; justify-content: space-around; 
-            align-items: center; border: 0.5px solid #333; z-index: 100;
-        }
-        .nav-link { text-align: center; color: var(--muted); text-decoration: none; flex: 1; }
-        .nav-link.active { color: var(--accent); }
-        .nav-link i { font-size: 24px; display: block; }
-        .nav-link span { font-size: 10px; font-weight: 500; margin-top: 4px; display: block; }
+        .settings-icon { font-size: 26px; color: #fff; }
         
-        .trade-main { 
-            background: var(--accent); width: 46px; height: 46px; border-radius: 50%; 
-            display: flex; align-items: center; justify-content: center; color: #000; 
-            font-size: 24px; margin-top: -30px; box-shadow: 0 4px 15px rgba(56, 243, 123, 0.4);
+        .notification-dot {
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            background-color: var(--red-dot);
+            border-radius: 50%;
+            top: -2px;
+            right: -3px;
+            border: 1.5px solid var(--bg);
         }
 
-        /* Modal */
-        #modal { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.8); z-index: 200; display: none; 
-            justify-content: center; align-items: center; 
+        /* Поле поиска */
+        .search-bar {
+            flex: 1;
+            background: var(--search-bg);
+            border-radius: 12px;
+            margin: 0 15px;
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            gap: 8px;
         }
-        .m-content { background: #1c1c1e; padding: 25px; border-radius: 20px; width: 80%; text-align: center; }
-        .m-content input { 
-            width: 100%; padding: 12px; margin: 15px 0; border-radius: 10px; 
-            border: none; background: #000; color: #fff; font-size: 20px; text-align: center;
+
+        .search-bar i { color: var(--muted); font-size: 18px; }
+        .search-bar input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 17px;
+            width: 100%;
+            outline: none;
         }
-        .m-content button { 
-            background: var(--accent); color: #000; border: none; padding: 12px; 
-            border-radius: 10px; width: 100%; font-weight: 700; 
+        .search-bar input::placeholder { color: var(--muted); }
+
+        .scan-icon { font-size: 26px; color: #fff; cursor: pointer; }
+
+        /* Выбор кошелька */
+        .wallet-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
+
+        .wallet-pill {
+            background: var(--surface);
+            padding: 5px 14px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 15px;
+            font-weight: 600;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .wallet-pill i { font-size: 16px; color: var(--muted); }
+
+        .wallet-dot {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background-color: var(--red-dot);
+            border-radius: 50%;
+            top: 2px;
+            right: 8px;
+        }
+
+        .multi-wallet {
+            font-size: 20px;
+            color: #fff;
+            opacity: 0.9;
+            cursor: pointer;
+        }
+
+        /* --- БАЛАНС --- */
+        .balance-container { text-align: center; padding: 25px 0; }
+        .main-amount { font-size: 52px; font-weight: 700; letter-spacing: -1px; margin-bottom: 4px; }
+        .sub-amount { color: var(--muted); font-size: 16px; font-weight: 500; }
+
+        /* --- КНОПКИ ДЕЙСТВИЙ --- */
+        .action-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            padding: 0 16px 25px;
+        }
+
+        .action-box { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .btn-circle {
+            width: 100%;
+            aspect-ratio: 1/0.85;
+            background: var(--surface);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+        }
+        .btn-circle.green { background: var(--accent); color: #000; }
+        .action-label { font-size: 13px; font-weight: 500; color: #fff; }
+
+        /* --- СПИСОК --- */
+        .tabs { 
+            display: flex; 
+            padding: 0 16px; 
+            gap: 20px; 
+            border-bottom: 0.5px solid #222; 
+            margin-bottom: 12px; 
+        }
+        .tab { padding: 12px 0; color: var(--muted); font-weight: 600; font-size: 16px; position: relative; }
+        .tab.active { color: #fff; }
+        .tab.active::after { 
+            content: ''; position: absolute; bottom: -1.5px; left: 0; right: 0; 
+            height: 3px; background: var(--accent); border-radius: 4px; 
+        }
+
+        .coin { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; }
+        .coin-l { display: flex; align-items: center; gap: 12px; }
+        .coin-icon { width: 40px; height: 40px; border-radius: 50%; }
+        .coin-name { font-weight: 600; font-size: 17px; }
+        .coin-cap { font-size: 13px; color: var(--muted); }
+        .coin-r { text-align: right; }
+        .price { font-weight: 600; font-size: 17px; }
+        .change { font-size: 13px; font-weight: 500; }
+        .up { color: var(--accent); }
+        .down { color: var(--red-dot); }
+
     </style>
 </head>
 <body>
 
     <div class="app">
-        <header class="header">
-            <i class='bx bx-cog'></i>
-            <div class="search-box">
-                <i class='bx bx-search'></i>
-                <input type="text" placeholder="Поиск">
+        <header class="header-main">
+            <div class="header-top-row">
+                <div class="icon-container">
+                    <i class='bx bx-cog settings-icon'></i>
+                    <div class="notification-dot"></div>
+                </div>
+                
+                <div class="search-bar">
+                    <i class='bx bx-search'></i>
+                    <input type="text" placeholder="Поиск">
+                </div>
+
+                <i class='bx bx-scan scan-icon'></i>
             </div>
-            <i class='bx bx-scan'></i>
+
+            <div class="wallet-row">
+                <div class="wallet-pill">
+                    Основной кошелек
+                    <i class='bx bx-chevron-right'></i>
+                    <div class="wallet-dot"></div>
+                </div>
+                <i class='bx bx-copy-alt multi-wallet'></i>
+            </div>
         </header>
 
-        <div class="wallet-info">
-            <div class="wallet-name" onclick="toggleModal()">Основной кошелек <i class='bx bx-chevron-right'></i></div>
-            <div class="balance-main" id="total-val">0,00 $</div>
-            <div class="balance-sub" id="total-change">0,00 $ (0.00%)</div>
+        <div class="balance-container">
+            <div class="main-amount">0,00 $</div>
+            <div class="sub-amount">0,00 $ (0.00%)</div>
         </div>
 
-        <div class="action-grid">
-            <div class="act-item">
-                <div class="act-btn"><i class='bx bx-up-arrow-alt' style="transform: rotate(45deg);"></i></div>
-                <span class="act-label">Отправить</span>
+        <div class="action-row">
+            <div class="action-box">
+                <div class="btn-circle"><i class='bx bx-up-arrow-alt' style="transform: rotate(45deg);"></i></div>
+                <span class="action-label">Отпр...</span>
             </div>
-            <div class="act-item">
-                <div class="act-btn"><i class='bx bx-down-arrow-alt'></i></div>
-                <span class="act-label">Получить</span>
+            <div class="action-box">
+                <div class="btn-circle"><i class='bx bx-down-arrow-alt'></i></div>
+                <span class="action-label">Полу...</span>
             </div>
-            <div class="act-item">
-                <div class="act-btn"><i class='bx bx-refresh'></i></div>
-                <span class="act-label">Обмен</span>
+            <div class="action-box">
+                <div class="btn-circle"><i class='bx bx-refresh'></i></div>
+                <span class="action-label">Обмен</span>
             </div>
-            <div class="act-item">
-                <div class="act-btn primary"><i class='bx bx-plus'></i></div>
-                <span class="act-label">Купить</span>
+            <div class="action-box">
+                <div class="btn-circle green"><i class='bx bx-plus'></i></div>
+                <span class="action-label">Поку...</span>
             </div>
         </div>
 
-        <div class="tab-bar">
-            <div class="t-item">Крипто</div>
-            <div class="t-item active">Избранное</div>
-            <div class="t-item">NFT</div>
-            <div class="t-icons"><i class='bx bx-history'></i><i class='bx bx-slider-alt'></i></div>
+        <div class="tabs">
+            <div class="tab">Криптовалюта</div>
+            <div class="tab active">Избранное</div>
+            <div class="tab">NFT</div>
         </div>
 
-        <div id="coin-list"></div>
+        <div class="coin">
+            <div class="coin-l">
+                <img src="https://assets.coingecko.com/coins/images/4128/small/solana.png" class="coin-icon">
+                <div>
+                    <div class="coin-name">SOL</div>
+                    <div class="coin-cap">2,74 $B</div>
+                </div>
+            </div>
+            <div class="coin-r">
+                <div class="price">86,45 $</div>
+                <div class="change down">-0.12%</div>
+            </div>
+        </div>
 
-        <div style="text-align: center; color: var(--accent); font-weight: 600; padding: 25px;">Просмотреть токены</div>
-        <div style="display: flex; justify-content: space-between; padding: 10px 16px; font-weight: 700; font-size: 18px;">Заработок <i class='bx bx-chevron-right'></i></div>
+        <div class="coin">
+            <div class="coin-l">
+                <img src="https://assets.coingecko.com/coins/images/279/small/ethereum.png" class="coin-icon">
+                <div>
+                    <div class="coin-name">ETH</div>
+                    <div class="coin-cap">7,92 $B</div>
+                </div>
+            </div>
+            <div class="coin-r">
+                <div class="price">2 346,91 $</div>
+                <div class="change up">+1.29%</div>
+            </div>
+        </div>
+
+        <div style="text-align: center; color: var(--accent); font-weight: 600; padding: 20px; font-size: 15px;">
+            Просмотреть токены
+        </div>
+
+        <div style="display: flex; justify-content: space-between; padding: 15px 16px; font-weight: 700; font-size: 19px;">
+            Заработок <i class='bx bx-chevron-right'></i>
+        </div>
     </div>
 
-    <nav class="nav">
-        <a href="#" class="nav-link active"><i class='bx bxs-home-alt-2'></i><span>Главная</span></a>
-        <a href="#" class="nav-link"><i class='bx bx-trending-up'></i><span>Популярные</span></a>
-        <div class="act-item" style="margin-top: 15px;">
-            <div class="trade-main"><i class='bx bx-transfer'></i></div>
-            <span style="font-size: 10px; color: var(--muted); font-weight: 500;">Торговать</span>
-        </div>
-        <a href="#" class="nav-link"><i class='bx bx-gift'></i><span>Награды</span></a>
-        <a href="#" class="nav-link" onclick="toggleModal()"><i class='bx bx-compass'></i><span>Подробнее</span></a>
-    </nav>
-
-    <div id="modal">
-        <div class="m-content">
-            <h3>Баланс USDT</h3>
-            <input type="number" id="usdt-in" placeholder="0">
-            <button onclick="save()">Подтвердить</button>
-        </div>
-    </div>
-
-    <script>
-        let count = localStorage.getItem('u_count') || 0;
-
-        function toggleModal() { 
-            const m = document.getElementById('modal');
-            m.style.display = m.style.display === 'flex' ? 'none' : 'flex';
-        }
-
-        function save() {
-            count = document.getElementById('usdt-in').value || 0;
-            localStorage.setItem('u_count', count);
-            update();
-            toggleModal();
-        }
-
-        const config = [
-            { id: 'tether', sym: 'USDT', img: 'https://assets.coingecko.com/coins/images/325/small/tether.png' },
-            { id: 'solana', sym: 'SOL', img: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' },
-            { id: 'ethereum', sym: 'ETH', img: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
-            { id: 'bitcoin', sym: 'BTC', img: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' }
-        ];
-
-        async function update() {
-            const res = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=tether,solana,ethereum,bitcoin&vs_currencies=usd&include_24hr_change=true&include_market_cap=true`);
-            const data = await res.json();
-            
-            const total = count * data.tether.usd;
-            const change = data.tether.usd_24h_change;
-            const diff = total * (change / 100);
-
-            document.getElementById('total-val').innerText = new Intl.NumberFormat('ru-RU', {minimumFractionDigits: 2}).format(total) + ' $';
-            document.getElementById('total-change').innerText = `${diff >= 0 ? '+' : ''}${diff.toFixed(2)} $ (${change.toFixed(2)}%)`;
-            document.getElementById('total-change').className = `balance-sub ${change >= 0 ? 'up' : 'down'}`;
-
-            let html = '';
-            config.forEach(coin => {
-                const d = data[coin.id];
-                html += `
-                <div class="coin-item">
-                    <div class="c-info">
-                        <img src="${coin.img}" class="c-img">
-                        <div>
-                            <div class="c-title">${coin.sym}</div>
-                            <div class="c-cap">${(d.usd_market_cap/1e9).toFixed(1)} $B</div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="c-price">${d.usd.toLocaleString()} $</div>
-                        <div class="c-perc ${d.usd_24h_change >= 0 ? 'up' : 'down'}">
-                            ${d.usd_24h_change >= 0 ? '+' : ''}${d.usd_24h_change.toFixed(2)}%
-                        </div>
-                    </div>
-                </div>`;
-            });
-            document.getElementById('coin-list').innerHTML = html;
-        }
-
-        update();
-        setInterval(update, 10000);
-    </script>
 </body>
 </html>
