@@ -3,25 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Trust Wallet Live</title>
+    <title>Trust Wallet Pro</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #121212;
-            --surface: #1c1c1c;
+            --bg-color: #0b0b0b;
+            --surface: #1c1c1e;
             --accent: #38f37b;
             --text-main: #ffffff;
-            --text-muted: #8e8e8e;
-            --red: #ff4d4d;
-            --green: #38f37b;
-            --nav-bg: #1a1a1a;
+            --text-muted: #8e8e93;
+            --red: #ff453a;
+            --green: #32d74b;
         }
 
         * { 
             margin: 0; padding: 0; box-sizing: border-box; 
-            font-family: 'Inter', sans-serif; 
+            font-family: 'Inter', -apple-system, sans-serif; 
             -webkit-tap-highlight-color: transparent; 
         }
 
@@ -32,113 +31,113 @@
             overflow-x: hidden; 
         }
         
-        .app-container { width: 100%; max-width: 480px; padding-bottom: 140px; }
+        .app-container { width: 100%; max-width: 430px; padding-bottom: 120px; }
 
-        /* Header */
+        /* --- Header --- */
         .header { 
-            display: flex; align-items: center; padding: 12px 16px; gap: 12px; 
-            position: sticky; top: 0; background: var(--bg-color); z-index: 10; 
+            display: flex; align-items: center; padding: 12px 16px; gap: 14px;
+            position: sticky; top: 0; background: var(--bg-color); z-index: 10;
         }
+        .header i { font-size: 26px; }
         .search-bar { 
-            flex-grow: 1; background: var(--surface); border-radius: 14px; 
-            display: flex; align-items: center; padding: 10px 14px; gap: 8px; 
+            flex-grow: 1; background: var(--surface); border-radius: 12px; 
+            display: flex; align-items: center; padding: 8px 12px; gap: 8px;
         }
-        .search-bar input { background: transparent; border: none; color: #fff; width: 100%; outline: none; font-size: 16px; }
+        .search-bar input { background: transparent; border: none; color: #fff; width: 100%; outline: none; font-size: 17px; }
         .search-bar i { color: var(--text-muted); font-size: 20px; }
 
-        /* Wallet Section */
-        .wallet-card { text-align: center; padding: 20px 0; }
+        /* --- Wallet --- */
+        .wallet-card { text-align: center; padding: 10px 0 25px; }
         .wallet-selector { 
-            display: inline-flex; align-items: center; gap: 6px; 
+            display: inline-flex; align-items: center; gap: 4px; 
             background: var(--surface); padding: 6px 14px; border-radius: 20px; 
-            font-size: 14px; font-weight: 600; margin-bottom: 15px; cursor: pointer; 
+            font-size: 15px; font-weight: 600; margin-bottom: 12px; cursor: pointer;
         }
-        .main-balance { font-size: 44px; font-weight: 700; letter-spacing: -0.5px; }
-        .sub-balance { font-size: 15px; margin-top: 4px; font-weight: 500; }
+        .main-balance { font-size: 48px; font-weight: 700; letter-spacing: -1px; }
+        .sub-balance { font-size: 16px; margin-top: 2px; font-weight: 500; color: var(--text-muted); }
 
-        /* Actions */
-        .actions { display: flex; justify-content: center; gap: 20px; padding: 10px 0 30px; }
-        .action-item { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 70px; }
+        /* --- Actions (Кнопки как на скрине) --- */
+        .actions { 
+            display: grid; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 12px; 
+            padding: 0 16px 25px; 
+        }
+        .action-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .action-btn { 
-            width: 56px; height: 56px; border-radius: 18px; 
+            width: 100%; aspect-ratio: 1.2 / 1; border-radius: 18px; 
             background: var(--surface); display: flex; align-items: center; 
-            justify-content: center; font-size: 26px; 
+            justify-content: center; font-size: 28px; 
         }
         .action-btn.green-btn { background: var(--accent); color: #000; }
         .action-label { font-size: 13px; font-weight: 500; color: #fff; }
 
-        /* Tabs */
+        /* --- Tabs --- */
         .tabs { display: flex; align-items: center; padding: 0 16px; border-bottom: 1px solid #222; margin-bottom: 10px; }
-        .tab { padding: 12px 12px; color: var(--text-muted); font-weight: 600; font-size: 15px; }
-        .tab.active { color: #fff; position: relative; }
+        .tab { padding: 12px 0; color: var(--text-muted); font-weight: 600; font-size: 16px; margin-right: 20px; position: relative; }
+        .tab.active { color: #fff; }
         .tab.active::after { 
-            content: ''; position: absolute; bottom: 0; left: 12px; right: 12px; 
+            content: ''; position: absolute; bottom: -1px; left: 0; right: 0; 
             height: 3px; background: var(--accent); border-radius: 4px; 
         }
-        .tab-icons { margin-left: auto; display: flex; gap: 18px; color: var(--text-muted); font-size: 20px; }
+        .tab-icons { margin-left: auto; display: flex; gap: 20px; color: var(--text-muted); font-size: 22px; }
 
-        /* Crypto List */
+        /* --- Crypto List --- */
         .crypto-list { padding: 0 16px; }
-        .crypto-item { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
+        .crypto-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
         .c-left { display: flex; align-items: center; gap: 14px; }
-        .c-icon { width: 40px; height: 40px; border-radius: 50%; object-fit: contain; background: #222; }
-        .c-name { font-weight: 700; font-size: 16px; color: #fff; display: block; }
-        .c-mcap { font-size: 13px; color: var(--text-muted); display: block; }
+        .c-icon { width: 42px; height: 42px; border-radius: 50%; object-fit: contain; }
+        .c-name { font-weight: 600; font-size: 17px; color: #fff; display: block; }
+        .c-mcap { font-size: 14px; color: var(--text-muted); }
         .c-right { text-align: right; }
-        .c-price { font-weight: 600; font-size: 16px; color: #fff; display: block; }
-        .c-change { font-size: 13px; font-weight: 500; display: block; }
+        .c-price { font-weight: 600; font-size: 17px; color: #fff; display: block; margin-bottom: 2px; }
+        .c-change { font-size: 14px; font-weight: 500; }
         
         .up { color: var(--green) !important; }
         .down { color: var(--red) !important; }
 
-        .view-all { text-align: center; color: var(--accent); font-weight: 600; padding: 25px; display: block; text-decoration: none; font-size: 15px; }
-        .earn-header { display: flex; justify-content: space-between; padding: 10px 16px; font-weight: 700; font-size: 18px; }
+        .view-all { text-align: center; color: var(--accent); font-weight: 600; padding: 25px; display: block; text-decoration: none; font-size: 16px; }
+        .earn-header { display: flex; justify-content: space-between; padding: 10px 16px; font-weight: 700; font-size: 19px; }
 
-        /* Bottom Nav */
+        /* --- Bottom Nav (Floating style) --- */
         .bottom-nav { 
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
-            width: 92%; max-width: 420px; background: var(--nav-bg); border-radius: 40px; 
-            height: 75px; display: flex; justify-content: space-around; align-items: center; 
-            padding: 0 10px; z-index: 100; border: 1px solid #2a2a2a; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.6); 
+            position: fixed; bottom: 25px; left: 50%; transform: translateX(-50%); 
+            width: 92%; max-width: 400px; background: rgba(26, 26, 26, 0.95); 
+            border-radius: 40px; height: 75px; display: flex; justify-content: space-around; 
+            align-items: center; padding: 0 10px; z-index: 100; border: 1px solid #2a2a2a; 
+            backdrop-filter: blur(10px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); 
         }
         .nav-item { display: flex; flex-direction: column; align-items: center; color: var(--text-muted); text-decoration: none; gap: 4px; flex: 1; }
-        .nav-item.active-pill { 
-            background: rgba(56, 243, 123, 0.1); border-radius: 30px; height: 55px; 
-            justify-content: center; color: var(--accent); 
-        }
-        .nav-item i { font-size: 24px; }
-        .nav-label { font-size: 10px; font-weight: 500; }
+        .nav-item.active { color: var(--accent); }
+        .nav-item i { font-size: 26px; }
+        .nav-label { font-size: 11px; font-weight: 500; }
         
-        /* Trade Button Overlay */
-        .trade-btn-container { position: relative; height: 100%; display: flex; align-items: center; justify-content: center; }
         .trade-circle { 
-            background: var(--accent); width: 50px; height: 50px; border-radius: 50%; 
+            background: var(--accent); width: 52px; height: 52px; border-radius: 50%; 
             display: flex; align-items: center; justify-content: center; 
-            color: #000; font-size: 24px; position: absolute; top: -25px; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4); 
+            color: #000; font-size: 26px; margin-bottom: -10px;
+            box-shadow: 0 4px 12px rgba(56, 243, 123, 0.3);
         }
-        .trade-label { margin-top: 35px; font-size: 10px; color: var(--text-muted); }
 
-        /* Modal */
+        /* --- Modal --- */
         #modal-overlay { 
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: rgba(0,0,0,0.85); z-index: 200; display: none; 
-            justify-content: center; align-items: center; backdrop-filter: blur(4px);
+            justify-content: center; align-items: center; backdrop-filter: blur(5px);
         }
         .modal { 
             background: var(--surface); padding: 25px; border-radius: 24px; 
-            width: 85%; max-width: 320px; text-align: center; border: 1px solid #333; 
+            width: 85%; max-width: 320px; text-align: center;
         }
-        .modal h3 { font-size: 20px; margin-bottom: 8px; }
+        .modal h3 { margin-bottom: 15px; }
         .modal input { 
-            width: 100%; padding: 14px; border-radius: 12px; border: 1px solid #444; 
-            background: #000; color: #fff; margin: 15px 0; outline: none; 
-            font-size: 22px; text-align: center; 
+            width: 100%; padding: 14px; border-radius: 12px; border: none; 
+            background: #000; color: #fff; margin-bottom: 15px; outline: none; 
+            font-size: 24px; text-align: center; 
         }
         .modal button { 
             background: var(--accent); color: #000; border: none; padding: 14px; 
-            border-radius: 12px; width: 100%; font-weight: 700; font-size: 16px; cursor: pointer; 
+            border-radius: 12px; width: 100%; font-weight: 700; cursor: pointer; 
         }
     </style>
 </head>
@@ -146,12 +145,12 @@
 
     <div class="app-container">
         <header class="header">
-            <i class='bx bx-cog' style="font-size: 24px;"></i>
+            <i class='bx bx-cog'></i>
             <div class="search-bar">
                 <i class='bx bx-search'></i>
                 <input type="text" placeholder="Поиск">
             </div>
-            <i class='bx bx-scan' style="font-size: 24px;"></i>
+            <i class='bx bx-scan'></i>
         </header>
 
         <div class="wallet-card">
@@ -186,19 +185,18 @@
             <div class="tab-icons"><i class='bx bx-history'></i><i class='bx bx-slider-alt'></i></div>
         </div>
 
-        <div class="crypto-list" id="crypto-container">
-            </div>
+        <div class="crypto-list" id="crypto-container"></div>
 
         <a href="#" class="view-all">Просмотреть токены</a>
         <div class="earn-header">Заработок <i class='bx bx-chevron-right'></i></div>
     </div>
 
     <nav class="bottom-nav">
-        <a href="#" class="nav-item active-pill"><i class='bx bxs-home-alt-2'></i><span class="nav-label">Главная</span></a>
+        <a href="#" class="nav-item active"><i class='bx bxs-home-alt-2'></i><span class="nav-label">Главная</span></a>
         <a href="#" class="nav-item"><i class='bx bx-trending-up'></i><span class="nav-label">Популярные</span></a>
-        <div class="nav-item trade-btn-container">
+        <div class="nav-item">
             <div class="trade-circle"><i class='bx bx-transfer'></i></div>
-            <span class="trade-label">Торговать</span>
+            <span class="nav-label" style="margin-top:15px">Торговать</span>
         </div>
         <a href="#" class="nav-item"><i class='bx bx-gift'></i><span class="nav-label">Награды</span></a>
         <a href="javascript:void(0)" class="nav-item" onclick="openMenu()">
@@ -209,14 +207,12 @@
     <div id="modal-overlay" onclick="closeMenu()">
         <div class="modal" onclick="event.stopPropagation()">
             <h3>Количество USDT</h3>
-            <p style="color: var(--text-muted); font-size: 13px;">Введите баланс в монетах USDT</p>
-            <input type="number" id="balance-input" placeholder="0" step="any">
+            <input type="number" id="balance-input" placeholder="0.00">
             <button onclick="updateBalance()">Подтвердить</button>
         </div>
     </div>
 
     <script>
-        // Загружаем сохраненный баланс из памяти браузера
         let usdtHoldings = parseFloat(localStorage.getItem('usdt_count')) || 0;
 
         function openMenu() { document.getElementById('modal-overlay').style.display = 'flex'; }
@@ -233,77 +229,58 @@
         }
 
         const coinsConfig = [
-            { id: 'tether', symbol: 'USDT', icon: 'https://assets.coingecko.com/coins/images/325/small/tether.png' },
             { id: 'solana', symbol: 'SOL', icon: 'https://assets.coingecko.com/coins/images/4128/small/solana.png' },
             { id: 'ethereum', symbol: 'ETH', icon: 'https://assets.coingecko.com/coins/images/279/small/ethereum.png' },
-            { id: 'bitcoin', symbol: 'BTC', icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' }
+            { id: 'bitcoin', symbol: 'BTC', icon: 'https://assets.coingecko.com/coins/images/1/small/bitcoin.png' },
+            { id: 'binancecoin', symbol: 'BNB', icon: 'https://assets.coingecko.com/coins/images/825/small/binance-coin-logo.png' }
         ];
 
         async function fetchPrices() {
             try {
-                const ids = coinsConfig.map(c => c.id).join(',');
+                const ids = 'tether,' + coinsConfig.map(c => c.id).join(',');
                 const response = await fetch(`https://api.coingecko.com/api/v3/simple/price?ids=${ids}&vs_currencies=usd&include_24hr_change=true&include_market_cap=true`);
                 const data = await response.json();
                 
-                // 1. Считаем главный баланс
-                const usdtPrice = data['tether'].usd;
-                const usdtChangePercent = data['tether'].usd_24h_change;
-                const totalUsd = usdtHoldings * usdtPrice;
-                
-                // Считаем изменение в $ (разница от вчерашнего дня)
-                const changeInUsd = totalUsd - (totalUsd / (1 + usdtChangePercent / 100));
+                const totalUsd = usdtHoldings * data['tether'].usd;
+                const usdtChange = data['tether'].usd_24h_change || 0;
+                const diffUsd = totalUsd * (usdtChange / 100);
 
-                // 2. Обновляем текст баланса
                 document.getElementById('display-balance').innerText = 
-                    new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(totalUsd) + " $";
+                    new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2 }).format(totalUsd) + " $";
 
-                // 3. Обновляем подстроку с процентами
                 const subEl = document.getElementById('display-sub');
-                const sign = changeInUsd >= 0 ? '+' : '';
-                subEl.innerText = `${sign}${changeInUsd.toFixed(2)} $ (${sign}${usdtChangePercent.toFixed(2)}%)`;
-                subEl.className = `sub-balance ${usdtChangePercent >= 0 ? 'up' : 'down'}`;
+                subEl.innerText = `${diffUsd >= 0 ? '+' : ''}${diffUsd.toFixed(2)} $ (${diffUsd >= 0 ? '+' : ''}${usdtChange.toFixed(2)}%)`;
+                subEl.className = `sub-balance ${usdtChange >= 0 ? 'up' : 'down'}`;
 
-                // 4. Отрисовка списка монет
                 renderList(data);
-            } catch (e) {
-                console.error("Ошибка сети или API:", e);
-            }
+            } catch (e) { console.error("Ошибка:", e); }
         }
 
         function renderList(data) {
             const container = document.getElementById('crypto-container');
             container.innerHTML = '';
-            
             coinsConfig.forEach(coin => {
-                const coinData = data[coin.id];
-                if (!coinData) return;
-
-                const price = coinData.usd;
-                const change = coinData.usd_24h_change.toFixed(2);
-                const mCap = (coinData.usd_market_cap / 1e9).toFixed(2);
-                const isUp = coinData.usd_24h_change >= 0;
-                
+                const c = data[coin.id];
+                const isUp = c.usd_24h_change >= 0;
                 container.innerHTML += `
                     <div class="crypto-item">
                         <div class="c-left">
-                            <img src="${coin.icon}" class="c-icon" alt="${coin.symbol}">
+                            <img src="${coin.icon}" class="c-icon">
                             <div>
                                 <span class="c-name">${coin.symbol}</span>
-                                <span class="c-mcap">${mCap} $B</span>
+                                <span class="c-mcap">${(c.usd_market_cap / 1e9).toFixed(2)} $B</span>
                             </div>
                         </div>
                         <div class="c-right">
-                            <span class="c-price">${new Intl.NumberFormat('en-US').format(price)} $</span>
-                            <span class="c-change ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${change}%</span>
+                            <span class="c-price">${new Intl.NumberFormat('en-US').format(c.usd)} $</span>
+                            <span class="c-change ${isUp ? 'up' : 'down'}">${isUp ? '+' : ''}${c.usd_24h_change.toFixed(2)}%</span>
                         </div>
                     </div>
                 `;
             });
         }
 
-        // Запуск при загрузке
         fetchPrices();
-        // Обновление раз в 15 секунд
         setInterval(fetchPrices, 15000);
     </script>
 </body>
